@@ -1,6 +1,7 @@
 import os
 import importlib
 import cudatext as app
+from cudatext import ed
 
 class Command:
     helpers = {}
@@ -24,11 +25,11 @@ class Command:
         getter = self.helpers.get(lexer)
         if not getter: return
 
-        filename = app.ed.get_filename()
-        lines = app.ed.get_text_all().split("\n")
+        filename = ed.get_filename()
+        lines = ed.get_text_all().split("\n")
         heads = list(getter(filename, lines))
 
-        app.ed.set_prop(app.PROP_CODETREE, False)
+        ed.set_prop(app.PROP_CODETREE, False)
         app.tree_proc(self.h_tree, app.TREE_ITEM_DELETE, 0)
         last_levels = {0: 0}
         for index, (line_number, level, header) in enumerate(heads):
@@ -42,7 +43,7 @@ class Command:
                 last_levels[level] = identity
                 if index == len(heads) - 1:
                     end_y = len(lines) - 1
-                    end_x = len(app.ed.get_text_line(end_y))
+                    end_x = len(ed.get_text_line(end_y))
                 else:
                     end_y = heads[index + 1][0]  # line_index of next header
                     end_x = 0
