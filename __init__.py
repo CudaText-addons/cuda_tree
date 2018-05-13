@@ -1,31 +1,33 @@
+import os
+import importlib
 import cudatext as cu
 
-class HelperC:
-    def get_headers(self, lines):
-        return [(1, 1, 'root-c'), (5, 2, 'n1'), (8, 2, 'n2')]
-
-class HelperCS:
-    def get_headers(self, lines):
-        return [(1, 1, 'root-c#'), (5, 2, 'n1'), (8, 2, 'n2')]
-
-
 class Command:
-    helpers = {
-        'C': HelperC, 
-        'C#': HelperCS,
-        }
+    helpers = {}
 
     def __init__(self):
         self.h_tree = cu.app_proc(cu.PROC_GET_CODETREE, '')
 
+        dir = cu.app_path(cu.APP_DIR_PY)
+        dirs = os.listdir(dir)
+        dirs = [s for s in dirs if s.startswith('cuda_tree_') and os.path.isdir(os.path.join(dir, s))]
+        for dir in dirs:
+            try:
+                _m = importlib.import_module(dir)
+                self.helpers.update(_m.helper)
+                #print(self.helpers)
+            except ImportError:
+                pass
+
+
     def update_tree(self, lexer):
-        helper_c = self.helpers.get(lexer)
-        if not helper_c: return
-        helper = helper_c()
-        
+        getter = self.helpers.get(lexer)
+        if not getter: return
+
+        filename = cu.ed.get_filename()
         lines = cu.ed.get_text_all().split("\n")
-        heads = list(helper.get_headers(lines))
-        
+        heads = list(getter(filename, lines))
+
         cu.ed.set_prop(cu.PROP_CODETREE, False)
         cu.tree_proc(self.h_tree, cu.TREE_ITEM_DELETE, 0)
         last_levels = {0: 0}
@@ -55,7 +57,7 @@ class Command:
 
     def on_change_slow(self, ed_self):
         self.check_and_update(ed_self)
-    
+
     def on_open(self, ed_self):
         self.check_and_update(ed_self)
 
