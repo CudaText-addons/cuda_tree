@@ -20,6 +20,8 @@ class Command:
             except ImportError:
                 pass
 
+        print('TreeHelpers: ' + ', '.join(sorted(list(self.helpers.keys()))))
+
 
     def update_tree(self, lexer):
         getter = self.helpers.get(lexer)
