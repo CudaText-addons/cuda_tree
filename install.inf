@@ -1,6 +1,6 @@
 [info]
 title=CudaTree
-desc=Builds Code Tree for lexers, which cannot build it correctly. Requires additional sub-plugins - structurers.
+desc=Builds Code Tree for lexers, which cannot build it correctly. Requires additional TreeHelpers to support each lexer.
 type=cudatext-plugin
 subdir=cuda_tree
 homepage=https://github.com/CudaText-addons/cuda_tree
