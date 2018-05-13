@@ -1,0 +1,10 @@
+[info]
+title=CudaTree
+desc=Builds Code Tree for lexers, which cannot build it correctly. Requires additional sub-plugins - structurers.
+type=cudatext-plugin
+subdir=cuda_tree
+homepage=https://github.com/CudaText-addons/cuda_tree
+
+[item1]
+section=events
+events=on_change_slow,on_open,on_tab_change
