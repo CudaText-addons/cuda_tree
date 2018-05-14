@@ -36,12 +36,17 @@ class Command:
         ed.set_prop(app.PROP_CODETREE, False)
         app.tree_proc(self.h_tree, app.TREE_ITEM_DELETE, 0)
         last_levels = {0: 0}
-        for index, (line_number, level, header) in enumerate(heads):
+        for index, data in enumerate(heads):
+            line_number = data[0]
+            level = data[1]
+            header = data[2]
+            icon_index = data[3] if len(data)>3 else -1
+
             for test_level in reversed(range(level)):
                 parent = last_levels.get(test_level)
                 if parent is None:
                     continue
-                identity = app.tree_proc(self.h_tree, app.TREE_ITEM_ADD, parent, index=-1, text=header)
+                identity = app.tree_proc(self.h_tree, app.TREE_ITEM_ADD, parent, index=-1, text=header, image_index=icon_index)
                 # when adding level K, forget all levels > K
                 last_levels = {k: v for k, v in last_levels.items() if k <= level}
                 last_levels[level] = identity
