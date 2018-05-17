@@ -3,6 +3,8 @@ import importlib
 import cudatext as app
 from cudatext import ed
 
+MAX_SECTIONS = 5
+
 class Command:
     helpers = {}
 
@@ -11,22 +13,48 @@ class Command:
 
         dir = app.app_path(app.APP_DIR_PY)
         dirs = os.listdir(dir)
-        dirs = [s for s in dirs if s.startswith('cuda_tree_') and os.path.isdir(os.path.join(dir, s))]
+        dirs = [os.path.join(dir, s) for s in dirs if s.startswith('cuda_tree_')]
         for dir in dirs:
-            try:
-                _m = importlib.import_module(dir)
-                self.helpers.update(_m.helper)
-                #print(self.helpers)
-            except ImportError:
-                pass
+            fn_inf = os.path.join(dir, 'install.inf')
+            s_module = app.ini_read(fn_inf, 'info', 'subdir', '')
+            for index in range(1, MAX_SECTIONS+1):
+                section = 'treehelper'+str(index)
+                s_method = app.ini_read(fn_inf, section, 'method', '')
+                if not s_method: continue
+                s_lexers = app.ini_read(fn_inf, section, 'lexers', '')
+                if not s_lexers: continue
+                for s_lex in s_lexers.split(','):
+                    self.helpers[s_lex] = {
+                        'module': s_module,
+                        'method': s_method,
+                        }
+                #print('module', s_module, 'lexers', s_lexers, 'method', s_method)
 
         items = sorted(list(self.helpers.keys()))
         if items:
             print('TreeHelpers: ' + ', '.join(items))
 
 
+    def get_getter(self, lexer):
+
+        d = self.helpers.get(lexer)
+        if not d: return
+
+        getter = d.get('getter')
+        if getter: return getter
+
+        module = d['module']
+        method = d['method']
+        _m = importlib.import_module(module)
+        getter = getattr(_m, method)
+
+        d['getter'] = getter
+        #print('helpers', self.helpers)
+        return getter
+
+
     def update_tree(self, lexer):
-        getter = self.helpers.get(lexer)
+        getter = self.get_getter(lexer)
         if not getter: return
 
         filename = ed.get_filename()

@@ -1,4 +1,8 @@
 
+2018.05.17
+* changed registering of TreeHelpers: now used install.inf and dict "helper" is not used
+* must update all TreeHelpers
+
 2018.05.14
 + add: support for icons in code tree
 
