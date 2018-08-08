@@ -65,7 +65,7 @@ class Command:
         app.tree_proc(self.h_tree, app.TREE_ITEM_DELETE, 0)
         last_levels = {0: 0}
         for index, data in enumerate(heads):
-            line_number = data[0]
+            pos = data[0]
             level = data[1]
             header = data[2]
             icon_index = data[3] if len(data)>3 else -1
@@ -78,13 +78,18 @@ class Command:
                 # when adding level K, forget all levels > K
                 last_levels = {k: v for k, v in last_levels.items() if k <= level}
                 last_levels[level] = identity
-                if index == len(heads) - 1:
-                    end_y = len(lines) - 1
-                    end_x = len(ed.get_text_line(end_y))
+
+                if type(pos)==int:
+                    if index == len(heads) - 1:
+                        end_y = len(lines) - 1
+                        end_x = len(ed.get_text_line(end_y))
+                    else:
+                        end_y = heads[index + 1][0]  # line_index of next header
+                        end_x = 0
+                    rng = (0, pos, end_x, end_y)
                 else:
-                    end_y = heads[index + 1][0]  # line_index of next header
-                    end_x = 0
-                rng = (0, line_number, end_x, end_y)
+                    rng = pos
+
                 app.tree_proc(self.h_tree, app.TREE_ITEM_SET_RANGE, identity, index=-1, text=rng)
                 break
 

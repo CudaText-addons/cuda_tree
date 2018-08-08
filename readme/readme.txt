@@ -17,8 +17,12 @@ micro framework to build Code Tree for additional lexers (which cannot build Cod
   - param "filename" is to support included files or something
 
   getter must return list of tuples: 
-  (line_index, level, caption, icon)
-  - field "line_index": 0-based index of editor line, which has tree node.
+  (pos, level, caption, icon)
+  
+  - field "pos": can be in one of formats:
+      int: index of editor line (0-based), with tree node.
+      tuple of int (x1, y1, x2, y2): range for tree node, 
+         ie more detailed info than simple int.
   - field "level": 1-based level of node. 
     node of level K+1 is nested into (nearest upper) node of level K.
   - field "caption": caption of node.

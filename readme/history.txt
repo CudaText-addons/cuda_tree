@@ -1,4 +1,7 @@
 
+2018.08.08
++ improved API: now TreeHelpers can pass range (x1, y1, x2, y2)
+
 2018.05.17
 * changed registering of TreeHelpers: now used install.inf and dict "helper" is not used
 * must update all TreeHelpers
