@@ -62,6 +62,7 @@ class Command:
         heads = list(getter(filename, lines))
 
         ed.set_prop(app.PROP_CODETREE, False)
+        app.tree_proc(self.h_tree, app.TREE_LOCK)
         app.tree_proc(self.h_tree, app.TREE_ITEM_DELETE, 0)
         last_levels = {0: 0}
         for index, data in enumerate(heads):
@@ -92,6 +93,8 @@ class Command:
 
                 app.tree_proc(self.h_tree, app.TREE_ITEM_SET_RANGE, identity, index=-1, text=rng)
                 break
+
+        app.tree_proc(self.h_tree, app.TREE_UNLOCK)
 
     def check_and_update(self, ed_self):
         lexer = ed_self.get_prop(app.PROP_LEXER_FILE)
