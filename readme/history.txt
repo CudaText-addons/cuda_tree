@@ -1,4 +1,7 @@
 
+2019.01.24
+- fixed nasty bug, when text of wrong editor was passed to helper
+
 2018.08.08
 + improved API: now TreeHelpers can pass range (x1, y1, x2, y2)
 

@@ -53,7 +53,7 @@ class Command:
         return getter
 
 
-    def update_tree(self, lexer):
+    def update_tree(self, ed, lexer):
         getter = self.get_getter(lexer)
         if not getter: return
 
@@ -99,7 +99,7 @@ class Command:
     def check_and_update(self, ed_self):
         lexer = ed_self.get_prop(app.PROP_LEXER_FILE)
         if lexer and (lexer in self.helpers):
-            self.update_tree(lexer)
+            self.update_tree(ed_self, lexer)
 
     def on_change_slow(self, ed_self):
         self.check_and_update(ed_self)
