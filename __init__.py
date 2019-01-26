@@ -83,7 +83,11 @@ class Command:
                 if type(pos)==int:
                     if index == len(heads) - 1:
                         end_y = len(lines) - 1
-                        end_x = len(ed.get_text_line(end_y))
+                        s = ed.get_text_line(end_y)
+                        if s is None:
+                            end_x = 0
+                        else:
+                            end_x = len(s)
                     else:
                         end_y = heads[index + 1][0]  # line_index of next header
                         end_x = 0
