@@ -1,4 +1,7 @@
 
+2019.02.05
+- fix for 2 files in a single tab
+
 2019.01.24
 - fixed nasty bug, when text of wrong editor was passed to helper
 

@@ -111,5 +111,5 @@ class Command:
     def on_open(self, ed_self):
         self.check_and_update(ed_self)
 
-    def on_tab_change(self, ed_self):
+    def on_focus(self, ed_self):
         self.check_and_update(ed_self)

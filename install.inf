@@ -7,4 +7,4 @@ homepage=https://github.com/CudaText-addons/cuda_tree
 
 [item1]
 section=events
-events=on_change_slow,on_open,on_tab_change
+events=on_change_slow,on_open,on_focus
