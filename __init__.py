@@ -101,6 +101,10 @@ class Command:
         app.tree_proc(self.h_tree, app.TREE_UNLOCK)
 
     def check_and_update(self, ed_self):
+
+        if not app.app_proc(app.PROC_SHOW_SIDEPANEL_GET, ''):
+            return
+        
         lexer = ed_self.get_prop(app.PROP_LEXER_FILE)
         if lexer and (lexer in self.helpers):
             self.update_tree(ed_self, lexer)
